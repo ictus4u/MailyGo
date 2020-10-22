@@ -27,7 +27,7 @@ func checkValues(values *FormValues) bool {
 
 func checkBlacklist(values []string) bool {
 	for _, value := range values {
-		for _, blacklistedString := range appConfig.Blacklist {
+		for _, blacklistedString := range appConfig.BlacklistArray {
 			if strings.Contains(strings.ToLower(value), strings.ToLower(blacklistedString)) {
 				return true
 			}
@@ -39,11 +39,11 @@ func checkBlacklist(values []string) bool {
 // Only tests when GOOGLE_API_KEY is set
 // Returns true when it spam
 func checkUrls(urlsToCheck []string) bool {
-	if len(appConfig.GoogleApiKey) < 1 || len(urlsToCheck) == 0 {
+	if len(appConfig.GoogleAPIKey) < 1 || len(urlsToCheck) == 0 {
 		return false
 	}
 	sb, err := safebrowsing.NewSafeBrowser(safebrowsing.Config{
-		APIKey: appConfig.GoogleApiKey,
+		APIKey: appConfig.GoogleAPIKey,
 		ID:     "MailyGo",
 	})
 	if err != nil {

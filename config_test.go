@@ -20,10 +20,10 @@ func Test_parseConfig(t *testing.T) {
 		if len(cfg.HoneyPots) != 1 || cfg.HoneyPots[0] != "_t_email" {
 			t.Error("Default HoneyPots are wrong")
 		}
-		if cfg.SmtpPort != 587 {
+		if cfg.SMTPPort != 587 {
 			t.Error("SMTP Port not 587")
 		}
-		if len(cfg.Blacklist) != 2 || cfg.Blacklist[0] != "gambling" || cfg.Blacklist[1] != "casino" {
+		if len(cfg.BlacklistArray) != 2 || cfg.BlacklistArray[0] != "gambling" || cfg.BlacklistArray[1] != "casino" {
 			t.Error("Default Blacklist is wrong")
 		}
 	})
@@ -60,22 +60,22 @@ func Test_parseConfig(t *testing.T) {
 		if !reflect.DeepEqual(cfg.Sender, "forms@example.com") {
 			t.Error("Sender is wrong")
 		}
-		if !reflect.DeepEqual(cfg.SmtpUser, "test@example.com") {
+		if !reflect.DeepEqual(cfg.SMTPUser, "test@example.com") {
 			t.Error("SMTP user is wrong")
 		}
-		if !reflect.DeepEqual(cfg.SmtpPassword, "secret") {
+		if !reflect.DeepEqual(cfg.SMTPPassword, "secret") {
 			t.Error("SMTP password is wrong")
 		}
-		if !reflect.DeepEqual(cfg.SmtpHost, "smtp.example.com") {
+		if !reflect.DeepEqual(cfg.SMTPHost, "smtp.example.com") {
 			t.Error("SMTP host is wrong")
 		}
-		if !reflect.DeepEqual(cfg.SmtpPort, 100) {
+		if !reflect.DeepEqual(cfg.SMTPPort, 100) {
 			t.Error("SMTP port is wrong")
 		}
-		if !reflect.DeepEqual(cfg.GoogleApiKey, "abc") {
+		if !reflect.DeepEqual(cfg.GoogleAPIKey, "abc") {
 			t.Error("Google API Key is wrong")
 		}
-		if !reflect.DeepEqual(cfg.Blacklist, []string{"test", "abc"}) {
+		if !reflect.DeepEqual(cfg.BlacklistArray, []string{"test", "abc"}) {
 			t.Error("Blacklist is wrong")
 		}
 	})
@@ -96,10 +96,10 @@ func Test_checkRequiredConfig(t *testing.T) {
 		DefaultRecipient:  "mail@example.com",
 		AllowedRecipients: []string{"mail@example.com"},
 		Sender:            "forms@example.com",
-		SmtpUser:          "test@example.com",
-		SmtpPassword:      "secret",
-		SmtpHost:          "smtp.example.com",
-		SmtpPort:          587,
+		SMTPUser:          "test@example.com",
+		SMTPPassword:      "secret",
+		SMTPHost:          "smtp.example.com",
+		SMTPPort:          587,
 	}
 	t.Run("Valid config", func(t *testing.T) {
 		if true != checkRequiredConfig(validConfig) {
@@ -129,21 +129,21 @@ func Test_checkRequiredConfig(t *testing.T) {
 	})
 	t.Run("SMTP user missing", func(t *testing.T) {
 		newConfig := *validConfig
-		newConfig.SmtpUser = ""
+		newConfig.SMTPUser = ""
 		if false != checkRequiredConfig(&newConfig) {
 			t.Error()
 		}
 	})
 	t.Run("SMTP password missing", func(t *testing.T) {
 		newConfig := *validConfig
-		newConfig.SmtpPassword = ""
+		newConfig.SMTPPassword = ""
 		if false != checkRequiredConfig(&newConfig) {
 			t.Error()
 		}
 	})
 	t.Run("SMTP host missing", func(t *testing.T) {
 		newConfig := *validConfig
-		newConfig.SmtpHost = ""
+		newConfig.SMTPHost = ""
 		if false != checkRequiredConfig(&newConfig) {
 			t.Error()
 		}

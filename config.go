@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/caarlos0/env/v6"
 )
@@ -12,12 +13,13 @@ type config struct {
 	DefaultRecipient  string   `env:"EMAIL_TO"`
 	AllowedRecipients []string `env:"ALLOWED_TO" envSeparator:","`
 	Sender            string   `env:"EMAIL_FROM"`
-	SmtpUser          string   `env:"SMTP_USER"`
-	SmtpPassword      string   `env:"SMTP_PASS"`
-	SmtpHost          string   `env:"SMTP_HOST"`
-	SmtpPort          int      `env:"SMTP_PORT" envDefault:"587"`
-	GoogleApiKey      string   `env:"GOOGLE_API_KEY"`
-	Blacklist         []string `env:"BLACKLIST" envSeparator:"," envDefault:"gambling,casino"`
+	SMTPUser          string   `env:"SMTP_USER"`
+	SMTPPassword      string   `env:"SMTP_PASS"`
+	SMTPHost          string   `env:"SMTP_HOST"`
+	SMTPPort          int      `env:"SMTP_PORT" envDefault:"587"`
+	GoogleAPIKey      string   `env:"GOOGLE_API_KEY"`
+	Blacklist         string   `env:"BLACKLIST"  envDefault:"gambling,casino"`
+	BlacklistArray    []string
 }
 
 func parseConfig() (*config, error) {
@@ -25,6 +27,7 @@ func parseConfig() (*config, error) {
 	if err := env.Parse(cfg); err != nil {
 		return cfg, errors.New("failed to parse config")
 	}
+	cfg.BlacklistArray = strings.Split(cfg.Blacklist, ",")
 	return cfg, nil
 }
 
@@ -38,13 +41,13 @@ func checkRequiredConfig(cfg *config) bool {
 	if cfg.Sender == "" {
 		return false
 	}
-	if cfg.SmtpUser == "" {
+	if cfg.SMTPUser == "" {
 		return false
 	}
-	if cfg.SmtpPassword == "" {
+	if cfg.SMTPPassword == "" {
 		return false
 	}
-	if cfg.SmtpHost == "" {
+	if cfg.SMTPHost == "" {
 		return false
 	}
 	return true

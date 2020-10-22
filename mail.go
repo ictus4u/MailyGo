@@ -45,8 +45,8 @@ func buildMessage(recipient string, date time.Time, values *FormValues) string {
 }
 
 func sendMail(to, message string) {
-	auth := smtp.PlainAuth("", appConfig.SmtpUser, appConfig.SmtpPassword, appConfig.SmtpHost)
-	err := smtp.SendMail(appConfig.SmtpHost+":"+strconv.Itoa(appConfig.SmtpPort), auth, appConfig.Sender, []string{to}, []byte(message))
+	auth := smtp.PlainAuth("", appConfig.SMTPUser, appConfig.SMTPPassword, appConfig.SMTPHost)
+	err := smtp.SendMail(appConfig.SMTPHost+":"+strconv.Itoa(appConfig.SMTPPort), auth, appConfig.Sender, []string{to}, []byte(message))
 	if err != nil {
 		fmt.Println("Failed to send mail:", err.Error())
 	}
