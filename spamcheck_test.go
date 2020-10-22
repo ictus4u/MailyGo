@@ -8,7 +8,7 @@ import (
 func Test_checkBlacklist(t *testing.T) {
 	prepare := func() {
 		os.Clearenv()
-		_ = os.Setenv("BLACKLIST", "test1,test2")
+		_ = os.Setenv("BLACKLIST", "test1,test2,spam word")
 		appConfig, _ = parseConfig()
 	}
 	t.Run("Allowed values", func(t *testing.T) {
@@ -20,6 +20,12 @@ func Test_checkBlacklist(t *testing.T) {
 	t.Run("Forbidden values", func(t *testing.T) {
 		prepare()
 		if checkBlacklist([]string{"How are you?", "Hello TeSt1"}) == false {
+			t.Error()
+		}
+	})
+	t.Run("Multi word spam phrase", func(t *testing.T) {
+		prepare()
+		if checkBlacklist([]string{"This is a sPaM WORD"}) == false {
 			t.Error()
 		}
 	})
